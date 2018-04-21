@@ -237,23 +237,8 @@ ShaderCode GenerateVertexShaderCode(API_TYPE api_type, const vertex_shader_uid_d
             "float3 ldir, h, cosAttn, distAttn;\n"
             "float dist, dist2, attn;\n");
 
-  if (uid_data->numColorChans == 0)
-  {
-    if (uid_data->components & VB_HAS_COL0)
-      out.Write("o.colors_0 = color0;\n");
-    else
-      out.Write("o.colors_0 = float4(1.0, 1.0, 1.0, 1.0);\n");
-  }
-
+  // TODO:  Possibly need the commits that do "color" -> "rawcolor"
   GenerateLightingShaderCode(out, uid_data->lighting, uid_data->components, "color", "o.colors_");
-
-  if (uid_data->numColorChans < 2)
-  {
-    if (uid_data->components & VB_HAS_COL1)
-      out.Write("o.colors_1 = color1;\n");
-    else
-      out.Write("o.colors_1 = o.colors_0;\n");
-  }
 
   // transform texcoords
   out.Write("float4 coord = float4(0.0, 0.0, 1.0, 1.0);\n");
@@ -381,6 +366,21 @@ ShaderCode GenerateVertexShaderCode(API_TYPE api_type, const vertex_shader_uid_d
     }
 
     out.Write("}\n");
+  }
+
+  if (uid_data->numColorChans == 0)
+  {
+    if (uid_data->components & VB_HAS_COL0)
+      out.Write("o.colors_0 = color0;\n");
+    else
+      out.Write("o.colors_0 = float4(1.0, 1.0, 1.0, 1.0);\n");
+  }
+  if (uid_data->numColorChans < 2)
+  {
+    if (uid_data->components & VB_HAS_COL1)
+      out.Write("o.colors_1 = color1;\n");
+    else
+      out.Write("o.colors_1 = o.colors_0;\n");
   }
 
   // clipPos/w needs to be done in pixel shader, not here
