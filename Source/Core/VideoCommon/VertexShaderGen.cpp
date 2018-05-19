@@ -242,7 +242,7 @@ ShaderCode GenerateVertexShaderCode(API_TYPE api_type, const vertex_shader_uid_d
     if (uid_data->components & VB_HAS_COL0)
       out.Write("o.colors_0 = color0;\n");
     else
-      out.Write("o.colors_0 = float4(1.0, 1.0, 1.0, 1.0);\n");
+      out.Write("o.colors_0 = float4(0.0, 0.0, 0.0, 0.0);\n");
   }
 
   GenerateLightingShaderCode(out, uid_data->lighting, uid_data->components, "color", "o.colors_");

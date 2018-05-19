@@ -86,7 +86,7 @@ void GenerateLightingShaderCode(ShaderCode& object, const LightingUidData& uid_d
       else if (components & VB_HAS_COL0)
         object.Write("int4 mat = int4(round(%s0 * 255.0));\n", inColorName);
       else
-        object.Write("int4 mat = int4(255, 255, 255, 255);\n");
+        object.Write("int4 mat = int4(0, 0, 0, 0);\n");
     }
     else  // from color
     {
@@ -105,7 +105,7 @@ void GenerateLightingShaderCode(ShaderCode& object, const LightingUidData& uid_d
           // TODO: this isn't verified. Here we want to read the ambient from the vertex,
           // but the vertex itself has no color. So we don't know which value to read.
           // Returning 1.0 is the same as disabled lightning, so this could be fine
-          object.Write("lacc = int4(255, 255, 255, 255);\n");
+          object.Write("lacc = int4(0, 0, 0, 0);\n");
       }
       else  // from color
       {
@@ -128,7 +128,7 @@ void GenerateLightingShaderCode(ShaderCode& object, const LightingUidData& uid_d
         else if (components & VB_HAS_COL0)
           object.Write("mat.w = int(round(%s0.w * 255.0));\n", inColorName);
         else
-          object.Write("mat.w = 255;\n");
+          object.Write("mat.w = 0;\n");
       }
       else  // from color
       {
@@ -146,7 +146,7 @@ void GenerateLightingShaderCode(ShaderCode& object, const LightingUidData& uid_d
           object.Write("lacc.w = int(round(%s0.w * 255.0));\n", inColorName);
         else
           // TODO: The same for alpha: We want to read from vertex, but the vertex has no color
-          object.Write("lacc.w = 255;\n");
+          object.Write("lacc.w = 0;\n");
       }
       else  // from color
       {
